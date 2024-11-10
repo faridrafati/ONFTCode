@@ -1,0 +1,143 @@
+{
+  "168587773": {
+    "market": {
+      "address": "0xc156714A682bb13c4f3EE945f0259847609892e2",
+      "rpc": ""
+    }
+  },
+  "169": {
+    "market": {
+      "address": "0xc546819478373AE2E7cBD2DaF5365Ef90add1e60",
+      "rpc": ""
+    }
+  },
+
+  "204": {
+    "market": {
+      "address": "0xc546819478373AE2E7cBD2DaF5365Ef90add1e60",
+      "rpc": ""
+    }
+  },
+  "56": {
+    "market": {
+      "address": "0x31af6F6Ae33d3909d96f3Fc06A2d3DB1813ffC4a",
+      "rpc": ""
+    }
+  },
+  "137": {
+    "market": {
+      "address": "0xdAd36305674518e928BC338b3a7187885440CC3A",
+      "rpc": ""
+    }
+  },
+  "84531": {
+    "market": {
+      "address": "0xB81120Ceb1bc3C575De0dFaBaBAbF9E544B7AC21",
+      "rpc": "https://testnet.era.zksync.dev"
+    }
+  },
+  "534352": {
+    "market": {
+      "address": "0x961da3219d8a19fD6dDCB003B76d3Fdfb00Cee02",
+      "rpc": "https://rpc.scroll.io"
+    }
+  },
+  "5": {
+    "market": {
+      "address": "0x4593B70A99aa0d226d3b54882A09dA37515989ED",
+      "rpc": "https://testnet.era.zksync.dev"
+    }
+  },
+  "280": {
+    "market": {
+      "address": "0xbbf80cF7522B0cd10cc8811D24Dd8AC42A77089F",
+      "rpc": "https://testnet.era.zksync.dev"
+    }
+  },
+  "420": {
+    "market": {
+      "address": "0xF9cf4C6b68D3d8C26692a26F9EbB10481c6Ed158",
+      "rpc": "https://endpoints.omniatech.io/v1/op/goerli/public"
+    }
+  },
+
+  "421613": {
+    "market": {
+      "address": "0x56F6F8886B68ef3EF5aadD5Fa5C748Ee545A104e",
+      "rpc": "https://arbitrum-goerli.publicnode.com"
+    }
+  },
+  "324": {
+    "market": {
+      "address": "0x6e8e2Dd2Cc3a1dac4dd3e8a5281a40984187B477",
+      "rpc": ""
+    }
+  },
+  "42161": {
+    "market": {
+      "address": "0x7a39b16f441B1d26338d7351a0A26D94032a2261",
+      "rpc": "https://rpc.ankr.com/arbitrum/d5f51887e978b1d8013d692dcf1cf7803ef83f5dae4526ece9236a9a7e3273c8"
+    }
+  },
+  "59144": {
+    "market": {
+      "address": "0x7a39b16f441B1d26338d7351a0A26D94032a2261",
+      "rpc": "https://linea.drpc.org"
+    }
+  },
+  "1101": {
+    "market": {
+      "address": "0x1b8c3a83c1c49674199db976db6c49b56b41a030",
+      "rpc": "https://rpc.ankr.com/polygon_zkevm"
+    }
+  },
+  "8453": {
+    "market": {
+      "address": "0x1b8c3a83c1C49674199db976dB6C49b56B41a030",
+      "rpc": "https://base.llamarpc.com"
+    }
+  },
+
+  "11155111": {
+    "market": {
+      "address": "0xAec4e59a2322adf6D5c3B7A21bda3779c0878399",
+      "rpc": ""
+    }
+  },
+  "167007": {
+    "market": {
+      "address": "0x2E18e4385aDAb5A8a63B5930114DF57252f5366f",
+      "rpc": "https://rpc.jolnir.taiko.xyz"
+    }
+  },
+
+  "42170": {
+    "market": {
+      "address": "0x6166Ef14eA99c10bB032a2C65cB6fADC07aE5089",
+      "rpc": "https://arbitrum-nova.drpc.org"
+    }
+  },
+  "5000": {
+    "market": {
+      "address": "0xc546819478373AE2E7cBD2DaF5365Ef90add1e60",
+      "rpc": "https://rpc.ankr.com/mantle/d5f51887e978b1d8013d692dcf1cf7803ef83f5dae4526ece9236a9a7e3273c8"
+    }
+  },
+  "5611": {
+    "market": {
+      "address": "0xc546819478373AE2E7cBD2DaF5365Ef90add1e60"
+    }
+  },
+  "10": {
+    "market": {
+      "address": "0x7CE98347b805f3c53b66Efc121Eb92909DD36215",
+      "rpc": "https://optimism.llamarpc.com"
+    }
+  },
+  "80001": {
+    "market": {
+      "address": "0x31A19F85ab9C3aF0acc0c5B342e10Bc39a1bE8e4",
+      "rpc": "https://polygon-mumbai.g.alchemy.com/v2/5ZOjxY1r8EsspcufIPfVgQ4LnNNr8Lmc"
+    }
+  }
+}

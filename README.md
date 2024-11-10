@@ -101,8 +101,7 @@ Before starting, ensure you have the following installed:
 >
 > Copy code
 >
-> node scripts/bridge.js \--network \<source-network\> \--dest
-> \<destination-network\> \--tokenId \<id\> (note: debugging now)
+> node scripts/bridge.js \--network \<source-network\> (note: debugging now)
 
 **Smart Contract Overview**
 

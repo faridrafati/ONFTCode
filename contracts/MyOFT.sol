@@ -11,4 +11,8 @@ contract MyOFT is OFT {
         address _lzEndpoint,
         address _delegate
     ) OFT(_name, _symbol, _lzEndpoint, _delegate) Ownable(_delegate) {}
+
+    function mint(address _to, uint256 _amount) public {
+        _mint(_to, _amount);
+    }
 }

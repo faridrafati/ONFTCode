@@ -133,3 +133,16 @@ Final Sender Balance: 99.0, Final Receiver Balance: 1.0
 ## License
 
 This project is licensed under the MIT License.
+
+## Checkig Results
+
+
+- **To verify the deployment** and cross-chain transactions, you can check the details on `sepolia` or `holesky` tesstnet Etherscan using the following contract addresses:
+
+   - Sepolia Network Etherscan: [Sepolia Etherscan](https://sepolia.etherscan.io/address/0x9cb38fedda9f676c22f025be8e86840fc810768d)
+   - Holesky Network Etherscan: [Holesky Etherscan](https://holesky.etherscan.io/address/0x2f66f90E013194162db21E751E7434F37e5F680B)
+- **Steps to Check:**
+   - Go to the respective Etherscan links provided above.
+   - Enter the contract address in the search bar to view the contract's details, transaction history, and events.
+   - Check for the specific transaction hashes from your deployment or send operations to ensure they are properly recorded.
+   - Make sure that the contract addresses and transaction hashes from your deployment and transfers are correctly referenced for accurate lookup.

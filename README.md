@@ -1,120 +1,246 @@
-<p align="center">
-  <a href="https://layerzero.network">
-    <img alt="LayerZero" style="width: 400px" src="https://docs.layerzero.network/img/LayerZero_Logo_White.svg"/>
-  </a>
-</p>
+# ONFTCode - OFTAdaptor
 
-<p align="center">
-  <a href="https://layerzero.network" style="color: #a77dff">Homepage</a> | <a href="https://docs.layerzero.network/" style="color: #a77dff">Docs</a> | <a href="https://layerzero.network/developers" style="color: #a77dff">Developers</a>
-</p>
+## Overview
+This repository contains the implementation of an ONFT (Omnichain Non-Fungible Token) using LayerZero's OFT (Omnichain Fungible Token) Adapter. The goal of the project is to provide a cross-chain solution for NFTs that leverages the interoperability features of LayerZero.
 
-<h1 align="center">OFTAdapter Example</h1>
+## Introduction to OFTAdaptor
+The OFT (Omnichain Fungible Token) Adapter is an extension of the LayerZero OFT protocol that allows seamless interaction between fungible and non-fungible tokens across multiple blockchains. By using the OFTAdaptor, developers can facilitate the transfer of NFTs in an omnichain context, enabling assets to move between different blockchains without the complexity of managing individual bridge mechanisms.
 
-<p align="center">
-  <a href="https://docs.layerzero.network/v2/developers/evm/oft/adapter" style="color: #a77dff">Quickstart</a> | <a href="https://docs.layerzero.network/contracts/oapp-configuration" style="color: #a77dff">Configuration</a> | <a href="https://docs.layerzero.network/contracts/options" style="color: #a77dff">Message Execution Options</a> | <a href="https://docs.layerzero.network/contracts/endpoint-addresses" style="color: #a77dff">Endpoint Addresses</a>
-</p>
+### OFTAdaptor vs. OFT
+- **OFT (Omnichain Fungible Token)**: This is a protocol by LayerZero that facilitates the transfer of fungible tokens across different blockchain networks. It is primarily used for tokens that represent the same value across chains, such as ERC-20 tokens.
+- **OFTAdaptor**: The OFTAdaptor extends the capabilities of OFT by allowing non-fungible tokens (NFTs) to leverage the same cross-chain messaging infrastructure. This means NFTs can now benefit from the same seamless interoperability that fungible tokens enjoy, making it easier to create and manage omnichain NFT projects.
 
-<p align="center">Template project for getting started with LayerZero's <code>OFTAdapter</code> contract development.</p>
+The OFTAdaptor simplifies the process of adapting NFTs to a cross-chain environment by providing the necessary infrastructure to interact with other LayerZero-compatible tokens. This makes it possible for NFTs to retain their unique properties while becoming accessible across multiple blockchain networks.
 
-### OFTAdapter additional setup:
+## Features
+- Cross-chain NFT transfers using LayerZero protocol.
+- Integration of LayerZero's OFT Adapter to achieve seamless interoperability.
+- Support for multiple EVM-compatible blockchains.
 
-- In your `hardhat.config.ts` file, add the following configuration to the network you want to deploy the OFTAdapter to:
-  ```typescript
-  // Replace `0x0` with the address of the ERC20 token you want to adapt to the OFT functionality.
-  oftAdapter: {
-      tokenAddress: '0x0',
-  }
-  ```
+## Prerequisites
+- Node.js (v14 or above)
+- npm or yarn
+- Hardhat (for testing and deployment)
 
-## 1) Developing Contracts
+## Installation
 
-#### Installing dependencies
+1. Clone the repository:
 
-We recommend using `pnpm` as a package manager (but you can of course use a package manager of your choice):
+   ```bash
+   git clone https://github.com/faridrafati/ONFTCode.git
+   cd ONFTCode/OFTAdaptor
+   ```
 
-```bash
-pnpm install
-```
+2. Install the dependencies:
 
-#### Compiling your contracts
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-This project supports both `hardhat` and `forge` compilation. By default, the `compile` command will execute both:
+## Usage
 
-```bash
-pnpm compile
-```
-
-If you prefer one over the other, you can use the tooling-specific commands:
+### Compile
+To compile the smart contracts, run:
 
 ```bash
-pnpm compile:forge
-pnpm compile:hardhat
+npx hardhat compile
 ```
 
-Or adjust the `package.json` to for example remove `forge` build:
-
-```diff
-- "compile": "$npm_execpath run compile:forge && $npm_execpath run compile:hardhat",
-- "compile:forge": "forge build",
-- "compile:hardhat": "hardhat compile",
-+ "compile": "hardhat compile"
-```
-
-#### Running tests
-
-Similarly to the contract compilation, we support both `hardhat` and `forge` tests. By default, the `test` command will execute both:
+### Test
+To run the tests, execute:
 
 ```bash
-pnpm test
+npx hardhat test
 ```
 
-If you prefer one over the other, you can use the tooling-specific commands:
+### Deployment
+To deploy the contracts, update the configuration in `hardhat.config.js` and use the following command:
 
 ```bash
-pnpm test:forge
-pnpm test:hardhat
+npx hardhat run scripts/deploy.js --network <network-name>
 ```
 
-Or adjust the `package.json` to for example remove `hardhat` tests:
+Replace `<network-name>` with the desired network (e.g., `rinkeby`, `mainnet`).
 
-```diff
-- "test": "$npm_execpath test:forge && $npm_execpath test:hardhat",
-- "test:forge": "forge test",
-- "test:hardhat": "$npm_execpath hardhat test"
-+ "test": "forge test"
+## Cross-Chain Transfer Script
+The repository also includes a script (`crossChainTransfer.js`) to perform cross-chain token transfers using the LayerZero protocol. Below is an example script for reference:
+
+### crossChainTransfer.js
+
+```javascript
+const { ethers } = require('ethers');
+const fs = require('fs').promises;
+const { Options } = require('@layerzerolabs/lz-v2-utilities');
+const { network } = require('hardhat');
+require('dotenv').config();
+
+async function getConfig(network) {
+    if (network === 'Sepolia') {
+        return {
+            privateKey: process.env.PRIVATE_KEY_SEPOLIA,
+            address: process.env.ADDRESS_SEPOLIA,
+            contractERCAddress: process.env.SEPOLIA_ERC_ADDRESS,
+            contractOFTAddress: process.env.SEPOLIA_OFT_ADDRESS,
+            contractADPAddress: process.env.SEPOLIA_ADP_ADDRESS,
+            rpcUrl: process.env.SEPOLIA_URL,
+            chainId: parseInt(process.env.SEPOLIA_CHAINID, 10),
+            lzEndAddress: process.env.SEPOLIA_LZ_END_ADDRESS,
+            lzId: parseInt(process.env.SEPOLIA_LZID, 10),
+        };
+    } else if (network === 'Holesky') {
+        return {
+            privateKey: process.env.PRIVATE_KEY_HOLESKY,
+            address: process.env.ADDRESS_HOLESKY,
+            contractERCAddress: process.env.HOLESKY_ERC_ADDRESS,
+            contractOFTAddress: process.env.HOLESKY_OFT_ADDRESS,
+            contractADPAddress: process.env.HOLESKY_ADP_ADDRESS,
+            rpcUrl: process.env.HOLESKY_URL,
+            chainId: parseInt(process.env.HOLESKY_CHAINID, 10),
+            lzEndAddress: process.env.HOLESKY_LZ_END_ADDRESS,
+            lzId: parseInt(process.env.HOLESKY_LZID, 10),
+        };
+    } else {
+        throw new Error('Unsupported network specified');
+    }
+}
+
+async function main() {
+    const abiERC = JSON.parse(await fs.readFile('abiERC.json', 'utf8'));
+    const abiOFT = JSON.parse(await fs.readFile('abiOFT.json', 'utf8'));
+    const abiADP = JSON.parse(await fs.readFile('abiADP.json', 'utf8'));
+
+    let networkFrom, networkTo;
+
+    if (network.name === 'sepolia') {
+        networkFrom = 'Sepolia';
+        networkTo = 'Holesky';
+    } else if (network.name === 'holesky') {
+        networkFrom = 'Holesky';
+        networkTo = 'Sepolia';
+    } else {
+        throw new Error('Unsupported network. Use "sepolia" or "holesky".');
+    }
+
+    const configFrom = await getConfig(networkFrom);
+    const configTo = await getConfig(networkTo);
+
+    const providerFrom = new ethers.providers.JsonRpcProvider(configFrom.rpcUrl);
+    const walletFrom = new ethers.Wallet(configFrom.privateKey, providerFrom);
+
+    const providerTo = new ethers.providers.JsonRpcProvider(configTo.rpcUrl);
+    const walletTo = new ethers.Wallet(configTo.privateKey, providerTo);
+
+    const myOFTAdapterFrom = new ethers.Contract(configFrom.contractADPAddress, abiADP, walletFrom);
+    const myOFTTo = new ethers.Contract(configTo.contractOFTAddress, abiOFT, walletTo);
+
+    const myERC = new ethers.Contract(configFrom.contractERCAddress, abiERC, walletFrom);
+
+    const initialBalanceFrom = await myERC.balanceOf(configFrom.address);
+    const initialBalanceAdapter = await myERC.balanceOf(myOFTAdapterFrom.address);
+    const initialBalanceTo = await myOFTTo.balanceOf(configTo.address);
+
+    console.log(`Initial balance of sender on ${networkFrom} : ${ethers.utils.formatEther(initialBalanceFrom)}`);
+    console.log(`Initial balance of Adapter on ${networkFrom}: ${ethers.utils.formatEther(initialBalanceAdapter)}`);
+    console.log(`Initial balance of Receiver on ${networkTo}: ${ethers.utils.formatEther(initialBalanceTo)}`);
+
+    const tokensToSend = ethers.utils.parseEther('1');
+    try {
+        let tx = await myOFTAdapterFrom
+            .connect(walletFrom)
+            .setPeer(configTo.lzId, ethers.utils.zeroPad(myOFTTo.address, 32));
+        await tx.wait();
+        console.log(`Set peer for myOFTAdapterFrom ${network.name} to chain Other: ${tx.hash}`);
+    } catch (error) {
+        console.error('Error minting tokens:', error);
+        return;
+    }
+
+    try {
+        let tx = await myOFTTo
+            .connect(walletTo)
+            .setPeer(configFrom.lzId, ethers.utils.zeroPad(myOFTAdapterFrom.address, 32));
+        await tx.wait();
+        console.log(`Set peer for myOFTTo to chain Other: ${tx.hash}`);
+    } catch (error) {
+        console.error('Error minting tokens:', error);
+        return;
+    }
+
+    const initialAmount = ethers.utils.parseEther('100');
+    await myERC.mint(configFrom.address, initialAmount);
+
+    const options = Options.newOptions().addExecutorLzReceiveOption(200000, 0).toHex().toString();
+
+    const sendParam = [
+        configTo.lzId,
+        ethers.utils.zeroPad(configTo.address, 32),
+        tokensToSend,
+        tokensToSend,
+        options,
+        '0x',
+        '0x',
+    ];
+
+    const [nativeFee] = await myOFTAdapterFrom.quoteSend(sendParam, false);
+
+    try {
+        let approveTx = await myERC.approve(myOFTAdapterFrom.address, tokensToSend);
+        await approveTx.wait();
+        console.log(`Approval transaction hash: ${approveTx.hash}`);
+    } catch (error) {
+        console.error('Error during token approval:', error);
+        return;
+    }
+
+    try {
+        let sendTx = await myOFTAdapterFrom.send(sendParam, [nativeFee, 0], configFrom.address, {
+            value: nativeFee,
+        });
+        await sendTx.wait();
+        console.log(`Token transfer transaction hash: ${sendTx.hash}`);
+    } catch (error) {
+        console.error('Sending Token Errors:', error);
+        return;
+    }
+
+    const finalBalanceFrom = await myERC.balanceOf(configFrom.address);
+    const finalBalanceAdapter = await myERC.balanceOf(myOFTAdapterFrom.address);
+    const finalBalanceTo = await myOFTTo.balanceOf(configTo.address);
+
+    console.log(`final balance of sender on ${networkFrom} : ${ethers.utils.formatEther(finalBalanceFrom)}`);
+    console.log(`final balance of Adapter on ${networkFrom}: ${ethers.utils.formatEther(finalBalanceAdapter)}`);
+    console.log(`final balance of Receiver on ${networkTo}: ${ethers.utils.formatEther(finalBalanceTo)}`);
+}
+
+main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error('Error during deployment:', error);
+        process.exit(1);
+    });
 ```
 
-## 2) Deploying Contracts
+### Running the Script
+To run the cross-chain transfer script:
 
-Set up deployer wallet/account:
+1. Ensure the `.env` file is properly set up with the necessary private keys and contract addresses for both Sepolia and Holesky.
+2. Use Hardhat to run the script with the desired network:
 
-- Rename `.env.example` -> `.env`
-- Choose your preferred means of setting up your deployer wallet/account:
+   ```bash
+   npx hardhat run scripts/crossChainTransfer.js --network <network-name>
+   ```
 
-```
-MNEMONIC="test test test test test test test test test test test junk"
-or...
-PRIVATE_KEY="0xabc...def"
-```
+Replace `<network-name>` with either `sepolia` or `holesky`.
 
-- Fund this address with the corresponding chain's native tokens you want to deploy to.
+## Configuration
+- Ensure you set up the appropriate network configurations in `hardhat.config.js`.
+- Update the LayerZero endpoint addresses and chain IDs as needed.
 
-To deploy your contracts to your desired blockchains, run the following command in your project's folder:
+## License
+This project is licensed under the MIT License. See the [LICENSE](../LICENSE) file for details.
 
-```bash
-npx hardhat lz:deploy
-```
-
-More information about available CLI arguments can be found using the `--help` flag:
-
-```bash
-npx hardhat lz:deploy --help
-```
-
-By following these steps, you can focus more on creating innovative omnichain solutions and less on the complexities of cross-chain communication.
-
-<br></br>
-
-<p align="center">
-  Join our community on <a href="https://discord-layerzero.netlify.app/discord" style="color: #a77dff">Discord</a> | Follow us on <a href="https://twitter.com/LayerZero_Labs" style="color: #a77dff">Twitter</a>
-</p>
+## Acknowledgements
+- [LayerZero](https://layerzero.network) for providing cross-chain messaging protocols.
+- [OpenZeppelin](https://openzeppelin.com) for secure smart contract templates.

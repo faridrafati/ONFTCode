@@ -1,192 +1,120 @@
-**ONFT Cross-Chain Project with LayerZero**
+<p align="center">
+  <a href="https://layerzero.network">
+    <img alt="LayerZero" style="width: 400px" src="https://docs.layerzero.network/img/LayerZero_Logo_White.svg"/>
+  </a>
+</p>
 
-**Overview**
+<p align="center">
+  <a href="https://layerzero.network" style="color: #a77dff">Homepage</a> | <a href="https://docs.layerzero.network/" style="color: #a77dff">Docs</a> | <a href="https://layerzero.network/developers" style="color: #a77dff">Developers</a>
+</p>
 
-This project implements an Omnichain Non-Fungible Token (ONFT) that can
-be transferred across multiple blockchain networks using
-[[LayerZero]{.underline}](https://layerzero.network/). LayerZero is an
-interoperability protocol that enables secure and seamless cross-chain
-interactions, allowing NFTs to move across different chains while
-retaining their unique properties.
+<h1 align="center">OFTAdapter Example</h1>
 
-**Features**
+<p align="center">
+  <a href="https://docs.layerzero.network/v2/developers/evm/oft/adapter" style="color: #a77dff">Quickstart</a> | <a href="https://docs.layerzero.network/contracts/oapp-configuration" style="color: #a77dff">Configuration</a> | <a href="https://docs.layerzero.network/contracts/options" style="color: #a77dff">Message Execution Options</a> | <a href="https://docs.layerzero.network/contracts/endpoint-addresses" style="color: #a77dff">Endpoint Addresses</a>
+</p>
 
--   **Cross-Chain NFT Transfer**: Transfer ONFTs between supported
-    blockchains with minimal effort.
+<p align="center">Template project for getting started with LayerZero's <code>OFTAdapter</code> contract development.</p>
 
--   **Interoperability with LayerZero**: Utilize LayerZero\'s protocol
-    for secure and efficient communication across chains.
+### OFTAdapter additional setup:
 
--   **Scalable and Decentralized**: Build decentralized applications
-    (DApps) that scale across multiple networks.
+- In your `hardhat.config.ts` file, add the following configuration to the network you want to deploy the OFTAdapter to:
+  ```typescript
+  // Replace `0x0` with the address of the ERC20 token you want to adapt to the OFT functionality.
+  oftAdapter: {
+      tokenAddress: '0x0',
+  }
+  ```
 
-**Prerequisites**
+## 1) Developing Contracts
 
-Before starting, ensure you have the following installed:
+#### Installing dependencies
 
--   [[Node.js]{.underline}](https://nodejs.org/) (version 16 or later)
+We recommend using `pnpm` as a package manager (but you can of course use a package manager of your choice):
 
--   [[Hardhat]{.underline}](https://hardhat.org/) or
-    [[Truffle]{.underline}](https://www.trufflesuite.com/)
+```bash
+pnpm install
+```
 
--   Ethers.js
+#### Compiling your contracts
 
--   A LayerZero-supported wallet (e.g., MetaMask)
+This project supports both `hardhat` and `forge` compilation. By default, the `compile` command will execute both:
 
--   [[Solidity]{.underline}](https://soliditylang.org/) compiler
+```bash
+pnpm compile
+```
 
-**Installation**
+If you prefer one over the other, you can use the tooling-specific commands:
 
-1.  **Clone the Repository:**
+```bash
+pnpm compile:forge
+pnpm compile:hardhat
+```
 
-> bash
->
-> Copy code
->
-> git clone
-> https://github.com/your-username/ONFT-cross-chain-layerzero.git
->
-> cd ONFT-cross-chain-layerzero
+Or adjust the `package.json` to for example remove `forge` build:
 
-2.  **Install Dependencies:**
+```diff
+- "compile": "$npm_execpath run compile:forge && $npm_execpath run compile:hardhat",
+- "compile:forge": "forge build",
+- "compile:hardhat": "hardhat compile",
++ "compile": "hardhat compile"
+```
 
-> bash
->
-> Copy code
->
-> npm install
+#### Running tests
 
-3.  **Compile Contracts:**
+Similarly to the contract compilation, we support both `hardhat` and `forge` tests. By default, the `test` command will execute both:
 
-> bash
->
-> Copy code
->
-> npx hardhat compile
+```bash
+pnpm test
+```
 
-**Configuration**
+If you prefer one over the other, you can use the tooling-specific commands:
 
-1.  **LayerZero Configuration**: Update the network configurations and
-    LayerZero endpoint details in hardhat.config.js or your
-    configuration file.
+```bash
+pnpm test:forge
+pnpm test:hardhat
+```
 
-2.  **Environment Variables**: Create a .env file and add your private
-    keys and RPC URLs:
+Or adjust the `package.json` to for example remove `hardhat` tests:
 
-> ini
->
-> Copy code
->
-> PRIVATE_KEY=your-private-key
->
-> RPC_URL_MAINNET=https://mainnet.infura.io/v3/your-infura-project-id
->
-> RPC_URL_TESTNET=https://goerli.infura.io/v3/your-infura-project-id
+```diff
+- "test": "$npm_execpath test:forge && $npm_execpath test:hardhat",
+- "test:forge": "forge test",
+- "test:hardhat": "$npm_execpath hardhat test"
++ "test": "forge test"
+```
 
-**Usage**
+## 2) Deploying Contracts
 
-1.  **Deploy Contracts**: Deploy the smart contract to your desired
-    network:
+Set up deployer wallet/account:
 
-> bash
->
-> Copy code
->
-> npx hardhat run scripts/deploy.js \--network \<network-name\>
+- Rename `.env.example` -> `.env`
+- Choose your preferred means of setting up your deployer wallet/account:
 
-2.  **Transfer ONFTs**: Use the following command or interact with your
-    DApp to initiate cross-chain NFT transfers:
+```
+MNEMONIC="test test test test test test test test test test test junk"
+or...
+PRIVATE_KEY="0xabc...def"
+```
 
-> bash
->
-> Copy code
->
-> node scripts/bridge.js \--network \<source-network\> (note: debugging now)
+- Fund this address with the corresponding chain's native tokens you want to deploy to.
 
-**Smart Contract Overview**
+To deploy your contracts to your desired blockchains, run the following command in your project's folder:
 
-The main contract, HoleskyLz.sol, inherits from the LayerZero ONFT library to
-handle cross-chain communication.
+```bash
+npx hardhat lz:deploy
+```
 
-**Key Functions:**
+More information about available CLI arguments can be found using the `--help` flag:
 
--   createToken(
-        string memory tokenURI,
-        uint256 price
-    ): Creating a new ONFT
-    address.
+```bash
+npx hardhat lz:deploy --help
+```
 
-- function sendOnft(uint16 destChainId,uint256 tokenId,bytes memory adapter,uint256 sendValue) :  Transfers the specified ONFT to another chain.
+By following these steps, you can focus more on creating innovative omnichain solutions and less on the complexities of cross-chain communication.
 
-**Events:**
+<br></br>
 
--   event TokenCreated(
-        uint256 indexed tokenId,
-        address indexed owner,
-        string tokenURI,
-        uint256 price
-    );
--   event MarketSale(
-        uint256 indexed tokenId,
-        address indexed seller,
-        address indexed buyer,
-        uint256 price,
-        uint256 saleValue
-    );
--   event TokenSent(
-        uint256 indexed tokenId,
-        address indexed sender,
-        uint16 indexed dstChainId,
-        string tokenURI
-    );
--   event TokenReceived(
-        uint256 indexed tokenId,
-        address indexed sender,
-        string tokenURI
-    );
--   event MarketItemCreated(
-        uint256 indexed tokenId,
-        address seller,
-        address owner,
-        uint256 price,
-        bool sold
-    );
--   event LzReceive(bytes indexed payload);
-
-**Supported Networks**
-
-This project is configured to support the following networks (expand as
-needed):
-
--   Ethereum Sepolia Testnet
-
--   Polygon
-
--   Binance Smart Chain (BSC)
-
--   Avalanche
-
--   Holesky Sepolia Testnet
-
-**Resources**
-
--   LayerZero Documentation
-
--   OpenZeppelin Contracts
-
--   Ethers.js Documentation
-
-**Contributing**
-
-Contributions are welcome! Please fork this repository and submit a pull
-request for any improvements or fixes.
-
-**License**
-
-This project is licensed under the MIT License. See the LICENSE file for
-details.
-
-**Contact**
-
-For questions or support, please reach out via faridrafati@gmail.com or open an issue in
-this repository.
+<p align="center">
+  Join our community on <a href="https://discord-layerzero.netlify.app/discord" style="color: #a77dff">Discord</a> | Follow us on <a href="https://twitter.com/LayerZero_Labs" style="color: #a77dff">Twitter</a>
+</p>

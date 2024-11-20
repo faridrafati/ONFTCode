@@ -1,71 +1,86 @@
-require("@nomicfoundation/hardhat-toolbox");
-require("dotenv").config();
-/** @type import('hardhat/config').HardhatUserConfig */
+// Get the environment configuration from .env file
+//
+// To make use of automatic environment setup:
+// - Duplicate .env.example file and name it .env
+// - Fill in the environment variables
+require('dotenv').config();
+require('hardhat-deploy');
+require('hardhat-contract-sizer');
+require('@nomiclabs/hardhat-ethers');
+require('@layerzerolabs/toolbox-hardhat');
+
+const { EndpointId } = require('@layerzerolabs/lz-definitions');
+
 module.exports = {
-  solidity: {
-    compilers: [
-      {
-        version: "0.8.4",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
-      {
-        version: "0.7.6",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
-      {
-        version: "0.8.12",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200,
-          },
-        },
-      },
-      {
-        version: "0.8.20",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 100,
-          },
-        },
-      },
-    ],
-  },
-  networks: {
-    sepolia: {
-      url: "https://rpc.sepolia.org",
-      chainId: 11155111,
-      accounts: [process.env.PRIVATE_KEY_SEPOLIA],
-      deployment: {
-        name: "SepoliaToken",
-        symbol: "STK",
-        minGasToTransfer: 3000000000000,
-        lzEndpointAddress: "0x6EDCE65403992e310A62460808c4b910D972f10f",
-        chainID: 40161,
-      },
+    paths: {
+        cache: 'cache/hardhat',
     },
-    holesky: {
-      url: "https://ethereum-holesky.publicnode.com",
-      chainId: 17000,
-      accounts: [process.env.PRIVATE_KEY_HOLESKY],
-      deployment: {
-        name: "HoleskyToken",
-        symbol: "HTK",
-        minGasToTransfer: 3000000000000,
-        lzEndpointAddress: "0x6EDCE65403992e310A62460808c4b910D972f10f",
-        chainID: 40217,
-      },
+    solidity: {
+        compilers: [
+            {
+                version: '0.8.22',
+                settings: {
+                    optimizer: {
+                        enabled: true,
+                        runs: 200,
+                    },
+                },
+            },
+        ],
     },
-  },
+    networks: {
+        sepolia: {
+            eid: EndpointId.SEPOLIA_V2_TESTNET,
+            url: process.env.SEPOLIA_URL,
+            accounts: [process.env.PRIVATE_KEY_SEPOLIA],
+            AdapterDeployment: {
+                tokenAddress: process.env.SEPOLIA_ERC_ADDRESS, // Corrected
+                lzEndpointAddress: process.env.SEPOLIA_LZ_END_ADDRESS,
+                owner: process.env.ADDRESS_SEPOLIA,
+            },
+            TokenDeployment: {
+                // name: 'sepoliaFT',
+                // symbol: 'SFT',
+                name: 'myToken',
+                symbol: 'MFT',
+            },
+            OFTdeployment: {
+                name: 'sepoliaOFT',
+                symbol: 'SFT',
+                lzEndpointAddress: process.env.SEPOLIA_LZ_END_ADDRESS,
+                delegate: process.env.ADDRESS_SEPOLIA,
+            },
+        },
+        holesky: {
+            eid: EndpointId.HOLESKY_V2_TESTNET,
+            url: process.env.HOLESKY_URL,
+            accounts: [process.env.PRIVATE_KEY_HOLESKY],
+            AdapterDeployment: {
+                tokenAddress: process.env.HOLESKY_ERC_ADDRESS, // Corrected
+                lzEndpointAddress: process.env.HOLESKY_LZ_END_ADDRESS,
+                owner: process.env.ADDRESS_HOLESKY,
+            },
+            TokenDeployment: {
+                // name: 'holeskyFT',
+                // symbol: 'HFT',
+                name: 'myToken',
+                symbol: 'MFT',
+            },
+            OFTdeployment: {
+                name: 'holeskyOFT',
+                symbol: 'HFT',
+                lzEndpointAddress: process.env.HOLESKY_LZ_END_ADDRESS,
+                delegate: process.env.ADDRESS_HOLESKY,
+            },
+        },
+        hardhat: {
+            // Need this for testing because TestHelperOz5.sol is exceeding the compiled contract size limit
+            allowUnlimitedContractSize: true,
+        },
+    },
+    namedAccounts: {
+        deployer: {
+            default: 0, // wallet address of index[0], of the mnemonic in .env
+        },
+    },
 };

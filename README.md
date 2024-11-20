@@ -59,15 +59,17 @@ npx hardhat test
 To deploy the contracts, update the configuration in `hardhat.config.js` and use the following command:
 
 ```bash
-npx hardhat run scripts/deploy.js --network <network-name>
+npx hardhat run deploy/deploy_ERC20.js --network <network-name>
+npx hardhat run scripts/deploy_OFT.js --network <network-name>
+npx hardhat run scripts/deploy_OFTAdapter.js --network <network-name>
 ```
 
-Replace `<network-name>` with the desired network (e.g., `rinkeby`, `mainnet`).
+Replace `<network-name>` with the desired network (e.g., `holesky`, `sepolia`).
 
 ## Cross-Chain Transfer Script
-The repository also includes a script (`crossChainTransfer.js`) to perform cross-chain token transfers using the LayerZero protocol. Below is an example script for reference:
+The repository also includes a script (`sendFTviaAdaptor.js`) to perform cross-chain token transfers using the LayerZero protocol. Below is an example script for reference:
 
-### crossChainTransfer.js
+### sendFTviaAdaptor.js
 
 ```javascript
 const { ethers } = require('ethers');
@@ -229,7 +231,7 @@ To run the cross-chain transfer script:
 2. Use Hardhat to run the script with the desired network:
 
    ```bash
-   npx hardhat run scripts/crossChainTransfer.js --network <network-name>
+   npx hardhat run scripts/sendFTviaAdaptor.js --network <network-name>
    ```
 
 Replace `<network-name>` with either `sepolia` or `holesky`.
